@@ -1,4 +1,40 @@
 {% extends "index.html" %}
 {% block content %}
-    <h1>{{ current_user.username }}</h1>
+    <div class="content-section">
+      <div class="media">
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.username }}</h2>
+          <p class="text-secondary">{{ current_user.email }}</p>
+            {% if current_user.host %}
+                <p class="text-secondary">Host Account: You may post new houses.</p>
+                <p class="text-primary">Your houses:</p>
+
+                {% for post in posts %}
+                <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata">
+                    <a class="mr-2" >{{ post.cat }}</a>
+                    <small class="text-muted">{{ post.price }}</small>
+                </div>
+                <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+                <p class="article-content">{{ post.content }}</p>
+
+                <div>
+                    <button type="button" class="btn btn-danger btn-lg m-1" href="{{ url_for('delete_post', post_id=post.id) }}">Delete</button>
+                </div>
+
+
+                </div>
+                </article>
+            {% endfor %}
+
+            {% else %}
+                <p class="text-secondary">Renter Account: You can only reserve houses.</p>
+            {% endif %}
+
+
+        </div>
+      </div>
+
+    </div>
 {% endblock content %}

@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from AirbnbLite import app, db
-from AirbnbLite.forms import RegistrationForm, LoginForm, PostForm
+from AirbnbLite.forms import RegistrationForm, LoginForm, PostForm, UpdateAccountForm
 from AirbnbLite.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -48,10 +48,11 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route("/account")
+@app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html', title='Account')
+    posts = Post.query.filter_by(username=current_user.username)
+    return render_template('account.html', title='Account', posts=posts)
 
 
 @app.route("/host")
