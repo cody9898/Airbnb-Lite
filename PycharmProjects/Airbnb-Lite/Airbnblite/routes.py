@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 from AirbnbLite import app, db
 from AirbnbLite.forms import RegistrationForm, LoginForm, PostForm
 from AirbnbLite.models import User, Post
@@ -60,9 +60,10 @@ def host():
     return render_template('host.html', title='Become a Host')
 
 
-@app.route("/host/becomehost", methods=['GET', 'POST'])
+@app.route("/becomehost", methods=['GET', 'POST'])
 def becomeHost():
     current_user.host = True
+    db.session.commit()
     return redirect(url_for('home'))
 
 
@@ -79,3 +80,20 @@ def new_post():
         return redirect(url_for('home'))
     return render_template('create_post.html', title='New Post',
                            form=form, legend='New Post')
+
+
+@app.route("/post/<int:post_id>")
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post)
+
+
+@app.route("/post/<int:post_id>/delete", methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your post has been deleted!', 'success')
+    return redirect(url_for('home'))

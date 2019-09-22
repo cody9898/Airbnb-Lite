@@ -7,11 +7,19 @@
               <a class="mr-2" >{{ post.cat }}</a>
               <small class="text-muted">{{ post.price }}</small>
             </div>
-            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+            <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.content }}</p>
-              <form method="POST" action="">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Reserve</button>
-              </form>
+
+              {% if post.author == current_user %}
+          <div>
+            <button type="button" class="btn btn-danger btn-lg m-1" href="{{ url_for('delete_post', post_id=post.id) }}">Delete</button>
+          </div>
+          {% else %}
+          <div>
+              <a class="btn btn-secondary btn-lg mt-1 mb-1" href="{{ url_for('delete_post', post_id=post.id) }}">Reserve</a>
+          </div>
+        {% endif %}
+
           </div>
         </article>
     {% endfor %}
