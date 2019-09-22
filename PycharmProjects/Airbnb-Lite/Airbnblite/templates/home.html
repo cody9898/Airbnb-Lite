@@ -4,11 +4,14 @@
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.host }}</a>
-              <small class="text-muted">{{ post.type }}</small>
+              <a class="mr-2" >{{ post.cat }}</a>
+              <small class="text-muted">{{ post.price }}</small>
             </div>
             <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.price }}</p>
+            <p class="article-content">{{ post.content }}</p>
+              <form method="POST" action="">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Reserve</button>
+              </form>
           </div>
         </article>
     {% endfor %}

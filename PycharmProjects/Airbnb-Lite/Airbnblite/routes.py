@@ -5,25 +5,10 @@ from AirbnbLite.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
 
-posts = [
-    {
-        'host': 'Cody',
-        'title': 'House 1',
-        'price': '$100/night',
-        'cat': 'private room'
-    },
-    {
-        'host': 'Sam',
-        'title': 'House 2',
-        'price': '$200/night',
-        'cat': 'entire apartment'
-    }
-]
-
-
 @app.route("/")
 @app.route("/home")
 def home():
+    posts = Post.query.all()
     return render_template('home.html', posts=posts)
 
 
@@ -36,7 +21,7 @@ def register():
         user = User(username=form.username.data, email=form.email.data, password=form.password.data, host=False)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
+        flash('Your account has been created!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -75,13 +60,19 @@ def host():
     return render_template('host.html', title='Become a Host')
 
 
+@app.route("/host/becomehost", methods=['GET', 'POST'])
+def becomeHost():
+    current_user.host = True
+    return redirect(url_for('home'))
+
+
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, cat=form.cat.data, price=int(form.price.data),
-                    author=current_user)
+        post = Post(title=form.title.data, content=form.content.data, cat=form.cat.data,
+                    price=("$"+form.price.data+"/night"), author=current_user)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
