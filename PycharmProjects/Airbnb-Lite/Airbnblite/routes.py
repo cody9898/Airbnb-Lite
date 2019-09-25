@@ -51,7 +51,7 @@ def logout():
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    posts = Post.query.filter_by(username=current_user.username)
+    posts = Post.query.filter_by(user_id=current_user.id)
     return render_template('account.html', title='Account', posts=posts)
 
 

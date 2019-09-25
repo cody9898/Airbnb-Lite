@@ -7,7 +7,7 @@
           <p class="text-secondary">{{ current_user.email }}</p>
             {% if current_user.host %}
                 <p class="text-secondary">Host Account: You may post new houses.</p>
-                <p class="text-primary">Your houses:</p>
+            <p class="account-heading"><strong>Your houses:</strong></p>
 
                 {% for post in posts %}
                 <article class="media content-section">

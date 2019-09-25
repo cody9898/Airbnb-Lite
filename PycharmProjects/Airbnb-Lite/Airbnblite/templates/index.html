@@ -37,11 +37,11 @@
           {% if current_user.is_authenticated %}
             {% if current_user.host %}
               <a class="nav-item nav-link" href="{{ url_for('new_post') }}">New Post</a>
-              <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
+              <a class="nav-item nav-link" href="{{ url_for('account') }}">Account: {{current_user.username}}</a>
               <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
             {% else %}
               <a class="nav-item nav-link" href="{{ url_for('host') }}">Become a host</a>
-              <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
+              <a class="nav-item nav-link" href="{{ url_for('account') }}">Account: {{current_user.username}}</a>
               <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
           {% else %}
